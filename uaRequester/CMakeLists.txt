@@ -1,0 +1,39 @@
+cmake_minimum_required(VERSION 3.5)
+set(PROJECT_NAME UAREQUESTER)
+set(TARGET_NAME uaRequester)
+project(${PROJECT_NAME} LANGUAGES CXX VERSION ${GLOBAL_VERSION})
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+file(GLOB_RECURSE PROJECT_SOURCES CONFIGURE_DEPENDS
+    "*.h"
+    "*.cpp"
+)
+
+#qt packages
+find_package(Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt5 COMPONENTS Network REQUIRED)
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
+
+add_executable(${TARGET_NAME} WIN32
+  ${PROJECT_SOURCES}
+)
+
+target_include_directories(${TARGET_NAME} PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+target_link_libraries(${TARGET_NAME}
+    Qt5::Core
+    Qt5::Network
+    Qt5::Widgets
+    ${WIN_LINKER_LIBS}
+    ${LINUX_LINKER_LIBS}
+)
+
+install(TARGETS ${TARGET_NAME}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
